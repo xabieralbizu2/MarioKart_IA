@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA version="1.5.0" xmlns="http://www.collada.org/2008/03/COLLADASchema">
+	<asset>
+		<contributor>
+			<authoring_tool>BrawlCrate</authoring_tool>
+		</contributor>
+		<created>2022-11-30T10:36:25Z</created>
+		<modified>2022-11-30T10:36:25Z</modified>
+		<unit meter="0.01" name="centimeter" />
+		<up_axis>Y_UP</up_axis>
+	</asset>
+	<library_images>
+		<image id="Car_A_bake_final02-image" name="Car_A_bake_final02">
+			<init_from>
+				<ref>Car_A_bake_final02.png</ref>
+			</init_from>
+		</image>
+	</library_images>
+	<library_materials>
+		<material id="guidecar2_guidecar_lambert3">
+			<instance_effect url="#guidecar2_guidecar_lambert3-fx" />
+		</material>
+	</library_materials>
+	<library_effects>
+		<effect id="guidecar2_guidecar_lambert3-fx" name="guidecar2_guidecar_lambert3">
+			<profile_COMMON>
+				<newparam sid="Car_A_bake_final02-surface">
+					<surface type="2D">
+						<init_from>
+							<ref>Car_A_bake_final02-image</ref>
+						</init_from>
+					</surface>
+				</newparam>
+				<newparam sid="Car_A_bake_final02-sampler">
+					<sampler2D>
+						<source>Car_A_bake_final02-surface</source>
+						<instance_image url="#Car_A_bake_final02-image" />
+						<wrap_s>WRAP</wrap_s>
+						<wrap_t>WRAP</wrap_t>
+						<minfilter>LINEAR</minfilter>
+						<magfilter>LINEAR</magfilter>
+					</sampler2D>
+				</newparam>
+				<technique sid="COMMON">
+					<phong>
+						<diffuse>
+							<texture texture="Car_A_bake_final02-sampler" texcoord="TEXCOORD0" />
+						</diffuse>
+					</phong>
+				</technique>
+			</profile_COMMON>
+		</effect>
+	</library_effects>
+	<library_geometries>
+		<geometry id="polygon0" name="polygon0">
+			<mesh>
+				<source id="polygon0_Positions">
+					<float_array id="polygon0_PosArr" count="78">-0.2608643 0 -0.5368042 -0.2608643 0.2683716 -0.4648438 -0.3444824 0 0 -0.2608643 0.4648438 -0.2683716 -0.2608643 0.5368042 0 -0.2608643 0.4648438 0.2683716 -0.2608643 0.2683716 0.4648438 -0.2608643 0 0.5368042 -0.2608643 -0.2683716 0.4648438 -0.2608643 -0.4648438 0.2683716 -0.2608643 -0.5368042 0 -0.2608643 -0.4648438 -0.2683716 -0.2608643 -0.2683716 -0.4648438 0.2580566 0.2683716 -0.4648438 0.2580566 0 -0.5368042 0.3444824 0 0 0.2580566 -0.2683716 -0.4648438 0.2580566 -0.4648438 -0.2683716 0.2580566 0.4648438 -0.2683716 0.2580566 0.5368042 0 0.2580566 0.4648438 0.2683716 0.2580566 0.2683716 0.4648438 0.2580566 0 0.5368042 0.2580566 -0.2683716 0.4648438 0.2580566 -0.4648438 0.2683716 0.2580566 -0.5368042 0</float_array>
+					<technique_common>
+						<accessor source="#polygon0_PosArr" count="26" stride="3">
+							<param name="X" type="float" />
+							<param name="Y" type="float" />
+							<param name="Z" type="float" />
+						</accessor>
+					</technique_common>
+				</source>
+				<source id="polygon0_Normals">
+					<float_array id="polygon0_NormArr" count="114">-0.988085 0 -0.153909 -0.988085 0.076955 -0.13329 -1 0 0 -0.988085 0.133289 -0.076955 -0.988085 0.153909 0 -0.988085 0.133289 0.076955 -0.988085 0.076955 0.13329 -0.988085 0 0.153909 -0.988085 -0.076955 0.133289 -0.988085 -0.13329 0.076955 -0.988085 -0.15391 0 -0.988085 -0.13329 -0.076955 -0.988085 -0.076955 -0.133289 0.987281 0.079492 -0.137683 0.987281 0 -0.158983 1 0 0 0.987281 -0.079491 -0.137684 0.987281 -0.137683 -0.079492 0 0 -1 0 0.5 -0.866025 0 0.866026 -0.5 0 1 0 0 0.866025 0.5 0 0.5 0.866025 0 0 1 0 -0.5 0.866025 0 -0.866025 0.5 0 -1 0 0 -0.866025 -0.5 0 -0.5 -0.866026 0.987281 0.137684 -0.079491 0.987281 0.158983 0 0.987281 0.137684 0.079492 0.987281 0.079492 0.137683 0.987281 0 0.158983 0.987281 -0.079491 0.137683 0.987281 -0.137683 0.079492 0.987281 -0.158983 0</float_array>
+					<technique_common>
+						<accessor source="#polygon0_NormArr" count="38" stride="3">
+							<param name="X" type="float" />
+							<param name="Y" type="float" />
+							<param name="Z" type="float" />
+						</accessor>
+					</technique_common>
+				</source>
+				<source id="polygon0_UVs0">
+					<float_array id="polygon0_UVArr0" count="34">0.05310059 0.1231079 0.06274414 0.1591492 0.1251526 0.1231079 0.08911133 0.1855164 0.1251526 0.1951904 0.1611938 0.1855164 0.187561 0.1591492 0.1972351 0.1231079 0.187561 0.08706665 0.1611938 0.06069946 0.1251526 0.05102539 0.08911133 0.06069946 0.06274414 0.08706665 0.2466431 0.2435303 0.2466431 0.173584 0.2055054 0.2435303 0.2055054 0.173584</float_array>
+					<technique_common>
+						<accessor source="#polygon0_UVArr0" count="17" stride="2">
+							<param name="S" type="float" />
+							<param name="T" type="float" />
+						</accessor>
+					</technique_common>
+				</source>
+				<vertices id="polygon0_Vertices">
+					<input semantic="POSITION" source="#polygon0_Positions" />
+				</vertices>
+				<triangles material="guidecar2_guidecar_lambert3" count="48">
+					<input semantic="VERTEX" source="#polygon0_Vertices" offset="0" />
+					<input semantic="NORMAL" source="#polygon0_Normals" offset="1" />
+					<input semantic="TEXCOORD" source="#polygon0_UVs0" set="0" offset="2" />
+					<p>2 2 2 1 1 1 0 0 0 3 3 3 1 1 1 2 2 2 4 4 4 3 3 3 2 2 2 2 2 2 5 5 5 4 4 4 6 6 6 5 5 5 2 2 2 7 7 7 6 6 6 2 2 2 2 2 2 8 8 8 7 7 7 9 9 9 8 8 8 2 2 2 10 10 10 9 9 9 2 2 2 2 2 2 11 11 11 10 10 10 12 12 12 11 11 11 2 2 2 0 0 0 12 12 12 2 2 2 15 15 2 14 14 0 13 13 1 16 16 12 14 14 0 15 15 2 17 17 11 16 16 12 15 15 2 1 19 15 14 18 14 0 18 13 13 19 16 14 18 14 1 19 15 3 20 15 13 19 14 1 19 13 18 20 16 13 19 14 3 20 15 4 21 15 18 20 14 3 20 13 19 21 16 18 20 14 4 21 15 5 22 15 19 21 14 4 21 13 20 22 16 19 21 14 5 22 15 6 23 15 20 22 14 5 22 13 21 23 16 20 22 14 6 23 15 7 24 15 21 23 14 6 23 13 22 24 16 21 23 14 7 24 15 8 25 15 22 24 14 7 24 13 23 25 16 22 24 14 8 25 15 9 26 15 23 25 14 8 25 13 24 26 16 23 25 14 9 26 15 10 27 15 24 26 14 9 26 13 25 27 16 24 26 14 10 27 15 11 28 15 25 27 14 10 27 13 17 28 16 25 27 14 11 28 15 12 29 15 17 28 14 11 28 13 16 29 16 17 28 14 12 29 15 0 18 15 16 29 14 12 29 13 14 18 16 16 29 14 0 18 15 18 30 3 15 15 2 13 13 1 19 31 4 15 15 2 18 30 3 20 32 5 15 15 2 19 31 4 21 33 6 15 15 2 20 32 5 22 34 7 15 15 2 21 33 6 23 35 8 15 15 2 22 34 7 24 36 9 15 15 2 23 35 8 25 37 10 15 15 2 24 36 9 15 15 2 25 37 10 17 17 11</p>
+				</triangles>
+			</mesh>
+		</geometry>
+	</library_geometries>
+	<library_controllers>
+		<controller id="polygon0_Controller">
+			<skin source="#polygon0">
+				<bind_shape_matrix>1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</bind_shape_matrix>
+				<source id="polygon0_Joints">
+					<Name_array id="polygon0_JointArr" count="1">Tube01</Name_array>
+					<technique_common>
+						<accessor source="#polygon0_JointArr" count="1">
+							<param name="JOINT" type="Name" />
+						</accessor>
+					</technique_common>
+				</source>
+				<source id="polygon0_Matrices">
+					<float_array id="polygon0_MatArr" count="16">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</float_array>
+					<technique_common>
+						<accessor source="#polygon0_MatArr" count="1" stride="16">
+							<param type="float4x4" />
+						</accessor>
+					</technique_common>
+				</source>
+				<source id="polygon0_Weights">
+					<float_array id="polygon0_WeightArr" count="1">1</float_array>
+					<technique_common>
+						<accessor source="#polygon0_WeightArr" count="1">
+							<param type="float" />
+						</accessor>
+					</technique_common>
+				</source>
+				<joints>
+					<input semantic="JOINT" source="#polygon0_Joints" />
+					<input semantic="INV_BIND_MATRIX" source="#polygon0_Matrices" />
+				</joints>
+				<vertex_weights count="26">
+					<input semantic="JOINT" offset="0" source="#polygon0_Joints" />
+					<input semantic="WEIGHT" offset="1" source="#polygon0_Weights" />
+					<vcount>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</vcount>
+					<v>0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</v>
+				</vertex_weights>
+			</skin>
+		</controller>
+	</library_controllers>
+	<library_visual_scenes>
+		<visual_scene id="RootNode" name="RootNode">
+			<node id="Tube01" name="Tube01" sid="Tube01" type="JOINT" />
+			<node id="polygon0" name="polygon0" type="NODE">
+				<instance_controller url="#polygon0_Controller">
+					<skeleton>#Tube01</skeleton>
+					<bind_material>
+						<technique_common>
+							<instance_material symbol="guidecar2_guidecar_lambert3" target="#guidecar2_guidecar_lambert3">
+								<bind_vertex_input semantic="TEXCOORD0" input_semantic="TEXCOORD" input_set="0" />
+							</instance_material>
+						</technique_common>
+					</bind_material>
+				</instance_controller>
+			</node>
+		</visual_scene>
+	</library_visual_scenes>
+	<scene>
+		<instance_visual_scene url="#RootNode" />
+	</scene>
+</COLLADA>
