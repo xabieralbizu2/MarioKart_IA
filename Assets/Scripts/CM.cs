@@ -1,65 +1,101 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 
 public class CarController : MonoBehaviour
 {
-    [SerializeField] WheelCollider frontRight;
-    [SerializeField] WheelCollider backRight;
-    [SerializeField] WheelCollider frontLeft;
-    [SerializeField] WheelCollider backLeft;
+    public Rigidbody rb;
 
-    [SerializeField] Transform frontLeftTransform;
-    [SerializeField] Transform frontRightTransform;
 
-    public float acceleration = 500f;
-    public float breakingForce = 300f;
+    public WheelCollider lfW, rfW, lbW, rbW;
+    public float driveSpeed, steerSpeed;
+    float hInput, vInput;
+    const float mult = 3;
+    bool isRunning;
 
-    private float currentAcceleration = 0f;
-    private float currentBreakForce = 0f;
 
-    public float maxTurnAngle = 60f;
-    private float currentTurnAngle = 0f;
 
-    public static bool canMove = true;
-
-    private void FixedUpdate()
+    //Update
+    (float, float) Check()
     {
-        if (canMove)
+        float houtput;
+        float voutput;
+        houtput = Input.GetAxis("Horizontal");
+        voutput = Input.GetAxis("Vertical");
+        return (houtput, voutput);
+    }
+
+    void Start()
+    {
+        isRunning = true;
+    }
+
+    private void Update()
+    {
+        if (isRunning)
         {
-            currentAcceleration = acceleration * Input.GetAxis("Vertical");
 
-            if (Input.GetKey(KeyCode.Space))
-                currentBreakForce = breakingForce;
-            else
-                currentBreakForce = 0f;
-
-            frontRight.motorTorque = currentAcceleration;
-            frontLeft.motorTorque = currentAcceleration;
-
-            frontRight.brakeTorque = currentBreakForce;
-            backRight.brakeTorque = currentBreakForce;
-            frontLeft.brakeTorque = currentBreakForce;
-            backLeft.brakeTorque = currentBreakForce;
-
-            currentTurnAngle = maxTurnAngle * Input.GetAxis("Horizontal");
-            frontLeft.steerAngle = currentTurnAngle;
-            frontRight.steerAngle = currentTurnAngle;
-
-            UpdateWheel(frontLeft, frontLeftTransform);
-            UpdateWheel(frontRight, frontRightTransform);
+            (hInput, vInput) = Check();
+            Debug.Log(hInput);
+            Debug.Log(vInput);
+            ForwardMovement(vInput);
+            SideWaysMovement(hInput);
         }
-
     }
 
-    void UpdateWheel(WheelCollider collider, Transform transform)
+
+
+    //Movement
+    private void ForwardMovement(float vInput)
     {
-        Vector3 position;
-        Quaternion rotation;
-        collider.GetWorldPose(out position, out rotation);
+        float motor = vInput * driveSpeed;
+        float brake = driveSpeed * mult;
 
-        transform.position = position;
-        transform.rotation = rotation;
+        if (vInput != 0)
+        {
+            Accelerate(motor);
+        }
+        else
+        {
+            Stop(brake);
+        }
     }
+    private void SideWaysMovement(float hInput)
+    {
+        lfW.steerAngle = steerSpeed * hInput;
+        rfW.steerAngle = steerSpeed * hInput;
+        lbW.steerAngle = steerSpeed * hInput;
+        rbW.steerAngle = steerSpeed * hInput;
+    }
+
+    private void Accelerate(float motor)
+    {
+        lfW.motorTorque = motor;
+        rfW.motorTorque = motor;
+        lbW.motorTorque = motor;
+        rbW.motorTorque = motor;
+
+        // Desactiva el frenado mientras hay movimiento
+        lfW.brakeTorque = 0;
+        rfW.brakeTorque = 0;
+        lbW.brakeTorque = 0;
+        rbW.brakeTorque = 0;
+    }
+
+    private void Stop(float motor)
+    {
+        float brakeTorque = Mathf.Abs(motor);
+        lfW.brakeTorque = brakeTorque;
+        rfW.brakeTorque = brakeTorque;
+        lbW.brakeTorque = brakeTorque;
+        rbW.brakeTorque = brakeTorque;
+
+        // Detén el motor torque para evitar conflictos
+        lfW.motorTorque = 0;
+        rfW.motorTorque = 0;
+        lbW.motorTorque = 0;
+        rbW.motorTorque = 0;
+    }
+
+
 }

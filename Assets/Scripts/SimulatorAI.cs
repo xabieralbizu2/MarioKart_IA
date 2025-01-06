@@ -7,24 +7,22 @@ public class SimulatorAI : MonoBehaviour
 {
 
     private Dictionary<List<float>, float> fitness = new Dictionary<List<float>, float>();
-    private Dictionary<List<float>, float> bestOfExp = new Dictionary<List<float>, float>();
-    private List<float> bestParams;
+    private List<List<float>> newGeneration;
 
-
+    private float elapsedTime = 0f;
     private int maxGeneration = 15;
-    
+    private int generation = 0;
+
     public AICreator aiCreator;
     public TimeManager timeManager;
+    public ParamsManager paramsManager;
 
-    private int generation = 0;
-    private float elapsedTime = 0f;
-    private float bestFitness = 0f;
 
     public int Generation => generation;
-    public List<float> BestParams => bestParams;
-    public float BestFitness => bestFitness;
+    public List<List<float>> NewGeneration => newGeneration;
+    public Dictionary<List<float>, float> Fitness => fitness;
 
-    public ParamsManager paramsManager;
+
 
     void Start()
     {
@@ -37,22 +35,22 @@ public class SimulatorAI : MonoBehaviour
         if (elapsedTime > timeManager.timeForDissapear + timeManager.timeBtwGenerations)
         {
             Dictionary <List<float>, float> sortedFitness = RankCars();
-            var varBestOfRound = sortedFitness.First();
-       
-            Dictionary<List<float>, float> bestOfRound = new Dictionary<List<float>, float> { { varBestOfRound.Key, varBestOfRound.Value } };
-            (bestParams, bestFitness) = paramsManager.ChooseBest(bestOfExp, bestOfRound);
-            Debug.Log(bestFitness);
-            foreach (float param in bestParams)
+            var elite = sortedFitness.Take(10).ToDictionary(pair => pair.Key, pair => pair.Value); //sustituir 10 por paramsManager.Elitism
+
+             newGeneration = paramsManager.GenerateNewPopulation(sortedFitness, elite);
+
+
+            fitness.Clear();
+            foreach (var paramsSet in newGeneration)
             {
-                Debug.Log(param);
+                fitness[paramsSet] = 0f; // Inicializamos el fitness en 0
             }
-            bestOfExp = new Dictionary<List<float>, float> { { bestParams, bestFitness } };
+
 
             generation++;
 
             aiCreator.ResetI();
             elapsedTime = 0f;
-            Debug.Log(generation);
 
         }
         elapsedTime += Time.deltaTime;

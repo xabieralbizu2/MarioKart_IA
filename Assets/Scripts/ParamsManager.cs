@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,18 +6,22 @@ using UnityEngine;
 public class ParamsManager : MonoBehaviour
 {
     public SimulatorAI simulatorAI;
+    public int ElitismCount = 10;
+    public float MutationRate = 0.05f;
 
     private float biasV;
     private float biasH;
     private float[] weightsHDistances = new float[5];
+    //adds
     private float[] weightsVDistances = new float[5];
     private float weightHSpeed;
     private float weightVSpeed;
-
     private int generation;
+
 
     public int PredefinedBias; 
     public int Generation => generation;
+
     
     void Start()
     {
@@ -36,6 +41,7 @@ public class ParamsManager : MonoBehaviour
         float bH = aiMovement.BiasH;
         float bV = aiMovement.BiasV;
         float[] wHDistances = aiMovement.WeightsHDistances;
+        //add
         float[] wVDistances = aiMovement.WeightsVDistances;
         float wHSpeed = aiMovement.WeightHSpeed;
         float wVSpeed = aiMovement.WeightVSpeed;
@@ -43,6 +49,7 @@ public class ParamsManager : MonoBehaviour
         parameters.Add(bH);
         parameters.Add(bV);
         parameters.AddRange(wHDistances);
+        //add
         parameters.AddRange(wVDistances);
         parameters.Add(wHSpeed);
         parameters.Add(wVSpeed);
@@ -57,31 +64,62 @@ public class ParamsManager : MonoBehaviour
         return fitness;
     }
 
-    public (List<float>, float) ChooseBest(Dictionary<List<float>, float> item1, Dictionary<List<float>, float> item2)
+    public List<List<float>> GenerateNewPopulation(Dictionary<List<float>, float> sortedFitness, Dictionary<List<float>, float> elite)
     {
-        List<float> bestParams = new List<float>();
-        float bestFitness = 0f;
-        var item2Best = item2.First();
-        if (item1.Any() && item2.Any())
+        List <List<float>> newPopulation = elite.Keys.ToList();
+
+        while (newPopulation.Count < simulatorAI.Fitness.Count)
         {
-            var item1Best = item1.First();
-            if (item1Best.Value > item2Best.Value)
+            List<float> parent1 = SelectParent(sortedFitness);
+            List<float> parent2 = SelectParent(sortedFitness);
+
+            List<float> offspring = Crossover(parent1, parent2);
+
+            if (UnityEngine.Random.value < MutationRate)
             {
-                bestParams = item1Best.Key;
-                bestFitness = item1Best.Value;
+                Mutate(offspring);
             }
-            else
+
+            newPopulation.Add(offspring);
+        }
+
+        return newPopulation;
+    }
+
+    List<float> SelectParent(Dictionary<List<float>, float> sortedFitness) //selección por ruleta
+    {
+        float totalFitness = sortedFitness.Values.Sum();
+        float randomValue = UnityEngine.Random.value * totalFitness;
+
+        float cumulative = 0f;
+        foreach (var pair in sortedFitness)
+        {
+            cumulative += pair.Value;
+            if (cumulative >= randomValue)
             {
-                bestParams = item2Best.Key;
-                bestFitness = item2Best.Value;
+                return pair.Key;
             }
         }
-        else
+
+        return sortedFitness.First().Key;
+    }
+
+    List<float> Crossover(List<float> parent1, List<float> parent2)
+    {
+        List<float> offspring = new List<float>();
+        for (int i = 0; i < parent1.Count; i++)
         {
-            bestParams = item2Best.Key;
-            bestFitness = item2Best.Value;
+            offspring.Add(UnityEngine.Random.value < 0.5f ? parent1[i] : parent2[i]);
         }
-        return (bestParams, bestFitness);
+        return offspring;
+    }
+
+    void Mutate(List<float> individual)
+    {
+        for (int i = 0; i < individual.Count; i++)
+        {
+            individual[i] += UnityEngine.Random.Range(-0.05f, 0.05f); // Ajuste de mutación
+        }
     }
 
 

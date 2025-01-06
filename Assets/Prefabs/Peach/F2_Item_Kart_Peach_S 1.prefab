@@ -698,15 +698,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: a98861055c84349b4b1649a477417eba, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a98861055c84349b4b1649a477417eba, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a98861055c84349b4b1649a477417eba, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a98861055c84349b4b1649a477417eba, type: 3}
       propertyPath: m_LocalPosition.x
@@ -866,15 +866,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 7255824852464613381}
-  gameObject: {fileID: 7368501182687220392}
   aIEnvironment: {fileID: 213358541324316719}
   lfW: {fileID: 197264908812571588}
   rfW: {fileID: 3691230261234108326}
   lbW: {fileID: 5552801675352486654}
   rbW: {fileID: 6191663685592526350}
-  driveSpeed: 300
+  lfWTransform: {fileID: 7767053083829671493}
+  rfWTransform: {fileID: 2701315775289867781}
+  lbWTransform: {fileID: 7849474503967609200}
+  rbWTransform: {fileID: 4680774328521190682}
+  driveSpeed: 650
   steerSpeed: 20
-  timeForDissapear: 150
+  timeForDissapear: 50
 --- !u!65 &6280099974014943743
 BoxCollider:
   m_ObjectHideFlags: 0

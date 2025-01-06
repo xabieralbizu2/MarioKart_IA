@@ -11,6 +11,7 @@ public class EventsManager : MonoBehaviour
     void Start()
     {
         walls = FindWallColliders();
+        Debug.Log(walls.Length);
     }
 
     // Update is called once per frame

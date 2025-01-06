@@ -13,11 +13,12 @@ public class AICreator : MonoBehaviour
     public float interval = 1f;
     public int numCars;
     public Vector3 spawnArea;
-    public float alpha;
+
 
     private float biasV;
     private float biasH;
     private float[] weightsHDistances = new float[5];
+    //add
     private float[] weightsVDistances = new float[5];
     private float weightHSpeed;
     private float weightVSpeed;
@@ -26,6 +27,9 @@ public class AICreator : MonoBehaviour
     private float nextUpdateTime;
     private int i;
     private List<float> bestParams;
+    private float bestFitness;
+    private float maxFitness = 1314 / 2;
+
 
     public int NumCars => numCars;
 
@@ -47,7 +51,7 @@ public class AICreator : MonoBehaviour
     {
         if (Time.time >= nextUpdateTime)
         {
-            bestParams = simulatorAI.BestParams;
+
             PerformUpdate();
             nextUpdateTime = Time.time + interval;
             
@@ -63,7 +67,15 @@ public class AICreator : MonoBehaviour
             RegisterAgent(instance);
 
             AIMovement aIMovement = instance.GetComponent<AIMovement>();
-            SetWeightsInstance(aIMovement, bestParams, generation);
+            if (generation == 0)
+            {
+                SetWeightsInstance(aIMovement, new List<float>(), generation);
+            }
+            else
+            {
+                SetWeightsInstance(aIMovement, simulatorAI.NewGeneration[i], generation);
+            }
+
             i++;
 
         }
@@ -74,19 +86,23 @@ public class AICreator : MonoBehaviour
 
     float DefineRandomV()
     {
-        int rand = UnityEngine.Random.Range(-50, 51); // Rango de -5 a 5
-        return rand * 0.00005f; // Rango entre -0.0025 y 0.0025 con incrementos de 0.0005
+        float u1 = UnityEngine.Random.value; // Primer número aleatorio entre 0 y 1
+        float u2 = UnityEngine.Random.value; // Segundo número aleatorio entre 0 y 1
+
+        // Generar un valor de una distribución normal estándar (media=0, desviación estándar=1)
+        float randStdNormal = Mathf.Sqrt(-2.0f * Mathf.Log(u1)) * Mathf.Sin(2.0f * Mathf.PI * u2);
+
+        // Escalar al rango deseado [-0.005, 0.005]
+        float scale = 0.005f;
+        return randStdNormal * scale;
     }
+
     GameObject InstantiatePrefab()
     {
-        Vector3 randomPosition = new Vector3(
-            UnityEngine.Random.Range(spawnArea.x, spawnArea.x),
-            spawnArea.y+2f,
-            UnityEngine.Random.Range(spawnArea.z, spawnArea.z)
-        );
-        Quaternion rotation = Quaternion.Euler(0f, 0f, 0f);
+
+        Quaternion rotation = Quaternion.Euler(0f, 110f, 0f);
         AIMovement aIMovement = carPrefab.GetComponent<AIMovement>();
-        GameObject instance = Instantiate(carPrefab, randomPosition, rotation);
+        GameObject instance = Instantiate(carPrefab, spawnArea, rotation);
 
         aIMovement.SetOrigin(spawnArea);
 
@@ -99,15 +115,8 @@ public class AICreator : MonoBehaviour
         agentsManager.AddAgent(gameObject);
     }
 
-    float ChooseParam(float paramFather, float paramRandom, int generation )
-    {
 
-
-        float param = (UnityEngine.Random.value < alpha) ? paramFather : paramRandom;
-        return param;
-    }
-
-    void SetWeightsInstance(AIMovement aIMovement, List<float> bestParams, int generation)
+    void SetWeightsInstance(AIMovement aIMovement, List<float> paramsSet, int generation)
     {
         if (generation == 0)
         {
@@ -115,26 +124,30 @@ public class AICreator : MonoBehaviour
             biasV = DefineRandomV() * predefinedBias;
             weightHSpeed = DefineRandomV();
             weightVSpeed = DefineRandomV();
+
             for (int j = 0; j < 5; j++)
             {
                 weightsHDistances[j] = DefineRandomV();
                 weightsVDistances[j] = DefineRandomV();
             }
+
             aIMovement.SetWeightSpeed(weightHSpeed, weightVSpeed);
             aIMovement.SetWeightsDistances(weightsHDistances, weightsVDistances);
             aIMovement.SetBias(biasH, biasV);
         }
         else
         {
-            biasH = ChooseParam(bestParams[0], DefineRandomV() * predefinedBias,generation);
-            biasV = ChooseParam(bestParams[1], DefineRandomV() * predefinedBias,generation);
-            weightHSpeed = ChooseParam(bestParams[12], DefineRandomV(),generation);
-            weightVSpeed = ChooseParam(bestParams[13], DefineRandomV(),generation);
+            biasH = paramsSet[0];
+            biasV = paramsSet[1];
+            weightHSpeed = paramsSet[12];
+            weightVSpeed = paramsSet[13];
+
             for (int j = 0; j < 5; j++)
             {
-                weightsHDistances[j] = ChooseParam(bestParams[2 + j], DefineRandomV(),generation);
-                weightsVDistances[j] = ChooseParam(bestParams[7 + j], DefineRandomV(),generation);
+                weightsHDistances[j] = paramsSet[2 + j];
+                weightsVDistances[j] = paramsSet[7 + j];
             }
+
             aIMovement.SetWeightSpeed(weightHSpeed, weightVSpeed);
             aIMovement.SetWeightsDistances(weightsHDistances, weightsVDistances);
             aIMovement.SetBias(biasH, biasV);
