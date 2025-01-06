@@ -66,12 +66,13 @@ public class ParamsManager : MonoBehaviour
 
     public List<List<float>> GenerateNewPopulation(Dictionary<List<float>, float> sortedFitness, Dictionary<List<float>, float> elite)
     {
-        List <List<float>> newPopulation = elite.Keys.ToList();
+        List<List<float>> newPopulation = elite.Keys.ToList(); // Agregar los elites directamente
 
         while (newPopulation.Count < simulatorAI.Fitness.Count)
         {
-            List<float> parent1 = SelectParent(sortedFitness);
-            List<float> parent2 = SelectParent(sortedFitness);
+            // Seleccionar padres únicamente de los elites
+            List<float> parent1 = SelectParent(elite);
+            List<float> parent2 = SelectParent(elite);
 
             List<float> offspring = Crossover(parent1, parent2);
 
@@ -86,13 +87,14 @@ public class ParamsManager : MonoBehaviour
         return newPopulation;
     }
 
-    List<float> SelectParent(Dictionary<List<float>, float> sortedFitness) //selección por ruleta
+
+    List<float> SelectParent(Dictionary<List<float>, float> elite) // selección por ruleta dentro de los elites
     {
-        float totalFitness = sortedFitness.Values.Sum();
+        float totalFitness = elite.Values.Sum();
         float randomValue = UnityEngine.Random.value * totalFitness;
 
         float cumulative = 0f;
-        foreach (var pair in sortedFitness)
+        foreach (var pair in elite)
         {
             cumulative += pair.Value;
             if (cumulative >= randomValue)
@@ -101,8 +103,9 @@ public class ParamsManager : MonoBehaviour
             }
         }
 
-        return sortedFitness.First().Key;
+        return elite.First().Key;
     }
+
 
     List<float> Crossover(List<float> parent1, List<float> parent2)
     {
@@ -118,7 +121,7 @@ public class ParamsManager : MonoBehaviour
     {
         for (int i = 0; i < individual.Count; i++)
         {
-            individual[i] += UnityEngine.Random.Range(-0.05f, 0.05f); // Ajuste de mutación
+            individual[i] += UnityEngine.Random.Range(-0.005f, 0.005f); // Ajuste de mutación
         }
     }
 

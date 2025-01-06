@@ -7,6 +7,7 @@ public class SimulatorAI : MonoBehaviour
 {
 
     private Dictionary<List<float>, float> fitness = new Dictionary<List<float>, float>();
+    private Dictionary<List<float>, float> bestOfExp = new Dictionary<List<float>, float>();
     private List<List<float>> newGeneration;
 
     private float elapsedTime = 0f;
@@ -37,7 +38,7 @@ public class SimulatorAI : MonoBehaviour
             Dictionary <List<float>, float> sortedFitness = RankCars();
             var elite = sortedFitness.Take(10).ToDictionary(pair => pair.Key, pair => pair.Value); //sustituir 10 por paramsManager.Elitism
 
-             newGeneration = paramsManager.GenerateNewPopulation(sortedFitness, elite);
+            newGeneration = paramsManager.GenerateNewPopulation(sortedFitness, elite);
 
 
             fitness.Clear();
@@ -48,6 +49,7 @@ public class SimulatorAI : MonoBehaviour
 
 
             generation++;
+            Debug.Log(generation);
 
             aiCreator.ResetI();
             elapsedTime = 0f;
@@ -67,6 +69,7 @@ public class SimulatorAI : MonoBehaviour
         float fitness_msr = paramsManager.MeasureFitness(gameObject);
         List<float> parameters = paramsManager.FindParameters(gameObject);
         fitness.Add(parameters, fitness_msr);
+
 
     }
 

@@ -15,6 +15,7 @@ public class AICreator : MonoBehaviour
     public Vector3 spawnArea;
 
 
+
     private float biasV;
     private float biasH;
     private float[] weightsHDistances = new float[5];
